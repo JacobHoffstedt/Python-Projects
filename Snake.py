@@ -21,6 +21,8 @@ clock = pygame.time.Clock() #Sets up the framerate of the game
 block_size = 20 #Size of each piece of the snake
 snake_color = (0, 255, 0) #Green color
 snake = [(300, 200), (280, 200), (260, 200)] #Initial snake as x and y coordinates. 
+direction = (block_size, 0)  # Sets the direction of the snake movement, moves 20 pixels per frame at 15 frames per second. 
+#Sets X to block size and Y to 0. 
 
 
 #Drawing the snake
@@ -36,14 +38,36 @@ def draw_snake(snake):
 
 
 
+#New_head: Moves the snake to the right by adding x and y coordinates each frame. 
+#x value is updated to the head of the snake representing 300 in (300, 200) and thus snake[0][0](first value of first tuple)
+#y value is updated to the head of the snake representing 200 in (300, 200) and thus snake[0][1](second value of first tuple)
+#The direction represents how the new head adds to the latest head and is represented by the direction variable, calling direction[0] calls the 
+#block_size value. and direction[1] the 0 value. So, the snake moves 20 pixels per frame to the right, and not vertically. 
+#snake.insert(0, new_head): list.insert(index, value) Adds the new head to the beginning of the list in front of the old head. 
+#snake.pop just removes the last value in the list, the last tail. 
 
 running = True
-while running:  
+while running:      
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP and direction != (0, block_size):
+                direction = (0, -block_size)
+            elif event.key == pygame.K_DOWN and direction != (0, -block_size):
+                direction = (0, block_size)
+            elif event.key == pygame.K_LEFT and direction != (block_size, 0):
+                direction = (-block_size, 0)
+            elif event.key == pygame.K_RIGHT and direction != (-block_size, 0):
+                direction = (block_size, 0)
+            
+    new_head = (snake[0][0] + direction[0], snake[0][1] + direction[1])
+    snake.insert(0, new_head)
+    snake.pop()
+
+
     
-    screen.fill((0, 0, 0)) #Color'
+    screen.fill((0, 0, 0)) #Color
     draw_snake(snake)
     pygame.display.flip()
     clock.tick(15)
