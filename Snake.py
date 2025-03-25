@@ -17,16 +17,27 @@ pygame.display.set_caption("Snake Game") #Setting name in title bar
 
 clock = pygame.time.Clock() #Sets up the framerate of the game  
 #Initiates the black box (the game screen) it runs until its crossed manually. 
+#Snake
+block_size = 20
+snake_color = (0, 255, 0)
+snake = [(300, 200), (280, 200), (260, 200)]
+
+def draw_snake(snake):
+    for segment in snake:
+        pygame.draw.rect(screen, snake_color, (segment[0], segment[1], block_size, block_size))
+
+
 running = True
 while running:  
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     
-    screen.fill((0, 255, 0)) #Color
+    screen.fill((0, 0, 0)) #Color'
+    draw_snake(snake)
     pygame.display.flip()
-
     clock.tick(15)
 
 pygame.quit()
 sys.exit()
+
